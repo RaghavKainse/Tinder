@@ -1,0 +1,8 @@
+https://github.com/akshaymarch7/devTinder/blob/main/src/models/user.js#L93
+
+400 Bad Request ✅ → Missing or invalid input (best for required fields)
+401 Unauthorized → User is not logged in
+403 Forbidden → User doesn't have permission
+404 Not Found → Resource doesn't exist
+409 Conflict → Duplicate data (e.g., email already exists)
+500 Internal Server Error → Server-side error
