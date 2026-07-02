@@ -4,6 +4,7 @@ const router = express.Router();
 const velidations = require("../validators/emailValidator.js");
 const bcrypt = require("bcryptjs");
 const User = require("../models/user.model.js");
+const auth = require("../middlewares/auth.middleware.js");
 
 router.post("/signup", async (req, res) => {
   try {
@@ -36,25 +37,34 @@ router.post("/login", async (req, res) => {
       });
     }
 
-    const user = await User.findOne({ emailId })
+    const user = await User.findOne({ emailId });
     if (!user) {
       throw new Error("Invailid credentials");
     }
     const isPasswordVailid = await user.verifingPass(password);
     if (isPasswordVailid) {
-      user.password=undefined;
+      user.password = undefined;
       let token = user.getJWT(req);
       res.cookie("token", token);
       res.status(200).json({
         message: "Login success!",
         data: user,
       });
-    }else{
-    throw new Error("Invailid credentials");
+    } else {
+      throw new Error("Invailid credentials");
     }
   } catch (error) {
     res.send("Err: " + error.message);
   }
+});
+
+router.get("/profile", auth, (req, res) => {
+  try {
+    const profileData = req.user;
+    profileData.password = undefined;
+    res.send(profileData);
+  } catch (error) {}
+  res.send("Profile");
 });
 
 module.exports = router;
