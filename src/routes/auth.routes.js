@@ -1,5 +1,4 @@
 const express = require("express");
-const app = express();
 const router = express.Router();
 const velidations = require("../validators/emailValidator.js");
 const bcrypt = require("bcryptjs");
@@ -58,13 +57,11 @@ router.post("/login", async (req, res) => {
   }
 });
 
-router.get("/profile", auth, (req, res) => {
-  try {
-    const profileData = req.user;
-    profileData.password = undefined;
-    res.send(profileData);
-  } catch (error) {}
-  res.send("Profile");
-});
+router.post('/logout',(req,res)=>{
+  res.cookie('token', null, {
+    expires:new Date(Date.now())
+  }).send("Logout successful!!")
+})
+
 
 module.exports = router;

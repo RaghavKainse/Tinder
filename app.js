@@ -4,14 +4,15 @@ const { connectDb } = require("./src/config/dataBase");
 const User = require("./src/models/user.model.js");
 const validators = require("./src/validators/emailValidator.js");
 const bcryptjs = require("bcryptjs");
-const authRoute= require('./src/routes/auth.routes.js')
+const cookie = require("cookie-parser");
+const authRoute = require("./src/routes/auth.routes.js");
+const profileRoute = require("./src/routes/profile.rourtes.js");
+
 app.use(express.json());
-const cookie= require('cookie-parser');
-
-
-app.use(cookie())
+app.use(cookie());
 // signUp
-app.use("/",authRoute)
+app.use("/", authRoute);
+app.use("/", profileRoute);
 
 app.post("/user", async (req, res) => {
   const data = req.body;
